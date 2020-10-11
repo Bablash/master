@@ -8,11 +8,13 @@ public:
 	int getx();
 	int getcount();
 
+	Polinomial();
+
 	Polinomial(int n); //create of array
 
 	Polinomial(const Polinomial& other); //constructor of copy
 	
-	int calc(int n, int* coeff, int x, static int count); //The value of a polynomial of degree n of x with the coefficients
+	int calc(int n, int* coeff, int x); //The value of a polynomial of degree n of x with the coefficients
 
 	char* toString(int n, int coeff[]); //transformation of polinomial in string view
 
@@ -25,4 +27,5 @@ private:
 	int* coeff;
 	int x;
 	static int count;
+	int c;
 };

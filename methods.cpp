@@ -12,6 +12,14 @@ int Polinomial::getn() {
 	return n;
 }
 
+int Polinomial::getcount() {
+	return count;
+}
+
+int Polinomial::getx() {
+	return x;
+}
+
 int* Polinomial::getcoeff() {
 	return coeff;
 }
@@ -23,10 +31,11 @@ int Polinomial::pow(int x, int n) {
 	return poww;
 }
 
-int Polinomial::calc(int n, int *coeff, int x) {
+int Polinomial::calc(int n, int *coeff, int x, static int count) {
 	int value = 0;
 	for (int i = 0, k = n; i <= n && k >= 0; k--, i++) {
 		value += coeff[i] * pow(x, k);
+		count++;
 	}
 	return value;
 }

@@ -47,7 +47,6 @@ int main() {
 	Polinomial first (5);
 	first.setn(5);
 	int n = first.getn();
-	first.getcount();
 	Polinomial second;
 	int x = second.getx();
 	Polinomial copy(first);
@@ -65,6 +64,8 @@ int main() {
 	if (test3(x))
 		cout << endl << "Test 3 is true";
 	else cout << endl << "Test 3 is false";
+
+	first.getcount();
 
 	return 0;
 }

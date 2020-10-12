@@ -67,6 +67,7 @@ Polinomial::Polinomial(int n) {
 	for (int i = 0; i <= n; i++) {
 		coeff[i] = rand() % 11 - 10;
 	}
+	c = count++;
 }
 
 Polinomial::Polinomial() {
@@ -80,11 +81,12 @@ Polinomial::Polinomial(const Polinomial& other) {
 	}
 }
 
-int Polinomial::getcount() {
-	c = count++; 
+int Polinomial::getcount() { 
+	c = count;
 	return c; 
 }
 
 Polinomial::~Polinomial() {
 	delete[] coeff;
+	//count--;
 }

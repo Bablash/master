@@ -1,6 +1,7 @@
 #include <iostream>
 #include "classes1.h"
 #include <string>
+#include <stdio.h>
 
 using namespace std;
 
@@ -8,12 +9,19 @@ void Polinomial::setn(int n1) {
 	n = n1;
 }
 
+int Polinomial::getvalue(){
+	return value;
+}
 int Polinomial::getn() {
 	return n;
 }
 
 int Polinomial::getx() {
 	return x;
+}
+
+void Polinomial::setx(int x1) {
+	x = x1;
 }
 
 int* Polinomial::getcoeff() {
@@ -27,66 +35,58 @@ int Polinomial::pow(int x, int n) {
 	return poww;
 }
 
-int Polinomial::calc(int n, int *coeff, int x) {
-	int value = 0;
+int Polinomial::calc() {
+	int value1 = 0;
 	for (int i = 0, k = n; i <= n && k >= 0; k--, i++) {
-		value += coeff[i] * pow(x, k);
+		value1 += coeff[i] * pow(x, k);
 	}
-	return value;
+	value = value1;
+	return value1;
 }
 
-char* Polinomial::toString(int n, int coeff[]) {
-
-	char* str = new char[n * 7 + 3];
-	for (int i = 0, k = n, j = 0; k >= 0; i = i + 6, k--, j++) {
-		if (coeff[j] < 0) {
-			str[i] = '-';
-			str[i + 1] = abs(coeff[j]) + '0';
-			str[i + 2] = '*';
-			str[i + 3] = 'x';
-			str[i + 4] = '^';
-			str[i + 5] = k + '0';
-		}
-		else {
-			str[i] = '+';
-			str[i + 1] = abs(coeff[j]) + '0';
-			str[i + 2] = '*';
-			str[i + 3] = 'x';
-			str[i + 4] = '^';
-			str[i + 5] = k + '0';
-		}
+char* Polinomial::toString() {
+	char* str = new char[255]{""};
+	char* buff = new char[20];
+	for (int i = 0; i <= n; i++)
+	{
+		if (coeff[i] < 0 or i == 0)
+			sprintf_s(buff, 20, "%d*x^%d", coeff[i], n - i);
+		else
+			sprintf_s(buff, 20, "+%d*x^%d", coeff[i], n - i);
+		strcat_s(str, 255, buff);
 	}
-	str[n * 7 + 1] = '=';
-	str[n * 7 + 2] = '0';
-	str[n * 7 + 3] = '\0';
-	return str;
+	char* ch = str;
+	return ch;
 }
 
-Polinomial::Polinomial(int n) {
-	coeff = new int[n + 1];
-	for (int i = 0; i <= n; i++) {
-		coeff[i] = rand() % 11 - 10;
+Polinomial::Polinomial(int n1) {
+	n = n1;
+	coeff = new int[n1 + 1];
+	for (int i = 0; i <= n1; i++) {
+		coeff[i] = rand() % 201-100;
 	}
-	c = count++;
+	count++;
 }
 
 Polinomial::Polinomial() {
-	x = 3;
+	coeff = NULL;
 }
 
 Polinomial::Polinomial(const Polinomial& other) {
+	n = other.n;
+	x = other.x;
 	coeff = new int[other.n + 1];
 	for (int i = 0; i <= other.n; i++) {
 		coeff[i] = other.coeff[i];
 	}
+	count++;
 }
 
 int Polinomial::getcount() { 
-	c = count;
-	return c; 
+	return count; 
 }
 
 Polinomial::~Polinomial() {
 	delete[] coeff;
-	//count--;
+	count--;
 }

@@ -3,7 +3,9 @@
 class Polinomial {
 public:
 	void setn(int n1);
+	void setx(int x1);
 	int getn();
+	int getvalue();
 	int* getcoeff();
 	int getx();
 	int getcount();
@@ -14,9 +16,9 @@ public:
 
 	Polinomial(const Polinomial& other); //constructor of copy
 	
-	int calc(int n, int* coeff, int x); //The value of a polynomial of degree n of x with the coefficients
+	int calc(); //The value of a polynomial of degree n of x with the coefficients
 
-	char* toString(int n, int coeff[]); //transformation of polinomial in string view
+	char* toString(); //transformation of polinomial in string view
 
 	int pow(int x, int n); //exponentiation
 
@@ -27,5 +29,5 @@ private:
 	int* coeff;
 	int x;
 	static int count;
-	int c;
+	int value;
 };

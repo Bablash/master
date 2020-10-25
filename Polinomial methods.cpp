@@ -9,9 +9,14 @@ void Polinomial::setN(int n1) {
 	n = n1;
 }
 
-int Polinomial::getValue(){
+void Polinomial::setX(int x1) {
+	x = x1;
+}
+
+int Polinomial::getValue() {
 	return value;
 }
+
 int Polinomial::getN() {
 	return n;
 }
@@ -20,12 +25,16 @@ int Polinomial::getX() {
 	return x;
 }
 
-void Polinomial::setX(int x1) {
-	x = x1;
-}
-
 int* Polinomial::getCoeff() {
 	return coeff;
+}
+
+int Polinomial::getCount() {
+	return count;
+}
+
+Polinomial::Polinomial() {
+	coeff = NULL;
 }
 
 int Polinomial::pow(int x, int n) {
@@ -34,6 +43,103 @@ int Polinomial::pow(int x, int n) {
 		poww *= x;
 	return poww;
 }
+
+Polinomial operator+(const Polinomial& thiss, const Polinomial& other)
+{
+	Polinomial sum;
+	if (thiss.n > other.n) {  //if the arrays are of different lengths, the length of the resulting array is equal to the length of the larger array. 
+		sum.n = thiss.n;		//Its first elements are written to the final array without changes until the counter shifts by their difference
+		sum.coeff = new int[thiss.n + 1];
+		for (int i = 0; i < thiss.n - other.n; i++) {
+			sum.coeff[i] = thiss.coeff[i];
+			for (int k = 0, i = thiss.n - other.n; i <= thiss.n; i++, k++)
+				sum.coeff[i] = thiss.coeff[i] + other.coeff[k];
+		}
+	}
+	else {
+		sum.n = other.n;
+		sum.coeff = new int[other.n + 1];
+		for (int i = 0; i < other.n - thiss.n; i++) {
+			sum.coeff[i] = other.coeff[i];
+			for (int k = 0, i = other.n - thiss.n; i <= other.n; i++, k++)
+				sum.coeff[i] = thiss.coeff[k] + other.coeff[i];
+		}
+	}
+	return sum;
+}
+
+Polinomial Polinomial::operator-(const Polinomial& other)
+{
+	Polinomial diff;
+	if (n > other.n) {
+		diff.n = n;
+		diff.coeff = new int[n + 1];
+		for (int i = 0; i < n - other.n; i++) {
+			diff.coeff[i] = coeff[i];
+			for (int k = 0, i = n - other.n; i <= n; i++, k++)
+				diff.coeff[i] = coeff[i] - other.coeff[k];
+		}
+	}
+	else {
+		diff.n = other.n;
+		diff.coeff = new int[other.n + 1];
+		for (int i = 0; i < other.n - n; i++) {
+			diff.coeff[i] = other.coeff[i];
+			for (int k = 0, i = other.n - n; i <= other.n; i++, k++)
+				diff.coeff[i] = coeff[k] - other.coeff[i];
+		}
+	}
+	return diff;
+}
+
+Polinomial Polinomial::operator++(int degree)
+{
+	Polinomial change;
+	change.n = ++n;
+	change.coeff = new int[n + 2];
+	change.coeff[0] = rand() % 201 - 100;	//add the new element for new degree
+	for (int i = 1; i <= n; i++)
+		change.coeff[i] = coeff[i - 1];		//shifting the original array one to the right
+	return change;
+}
+
+Polinomial Polinomial::operator--(int degree)
+{
+	Polinomial change;
+	change.n = --n;
+	change.coeff = new int[n + 1];
+	for (int i = 1; i <= n + 1; i++)
+		change.coeff[i - 1] = coeff[i]; //shifting the original array one to the left
+	return change;
+}
+
+int& Polinomial::operator[](int index)
+{
+	return coeff[index];
+}
+
+void Polinomial::operator=(const Polinomial& other)
+{
+	delete[] coeff; //delete this coeff to fill with other elements
+	n = other.n;
+	x = other.x;
+	coeff = new int[other.n + 1];
+	for (int i = 0; i <= other.n; i++) {
+		coeff[i] = other.coeff[i];
+	}
+}
+
+int Polinomial::operator()(Polinomial& x1)
+{
+	n = x1.n;
+	x = 3;
+	coeff = new int[n + 1];
+	for (int i = 0; i <= n; i++) {
+		coeff[i] = x1.coeff[i];
+	}
+	value = calc();
+	return value;
+} 
 
 int Polinomial::calc() {
 	int value1 = 0;
@@ -45,7 +151,7 @@ int Polinomial::calc() {
 }
 
 char* Polinomial::toString() {
-	char* str = new char[255]{""};
+	char* str = new char[255]{ "" };
 	char* buff = new char[20];
 	for (int i = 0; i <= n; i++)
 	{
@@ -63,13 +169,9 @@ Polinomial::Polinomial(int n1) {
 	n = n1;
 	coeff = new int[n1 + 1];
 	for (int i = 0; i <= n1; i++) {
-		coeff[i] = rand() % 201-100;
+		coeff[i] = rand() % 201 - 100;
 	}
 	count++;
-}
-
-Polinomial::Polinomial() {
-	coeff = NULL;
 }
 
 Polinomial::Polinomial(const Polinomial& other) {
@@ -80,10 +182,6 @@ Polinomial::Polinomial(const Polinomial& other) {
 		coeff[i] = other.coeff[i];
 	}
 	count++;
-}
-
-int Polinomial::getCount() { 
-	return count; 
 }
 
 Polinomial::~Polinomial() {

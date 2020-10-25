@@ -4,67 +4,57 @@
 using namespace std;
 int Polinomial::count = 0;
 
-bool test1(int x) { //test for the degree = 0
-	Polinomial test(0);
-	test.setX(x);
-	int expected = *test.getCoeff(); //since the degree of the polynomial is 0, it will only have a coefficient multiplied by x^0 and it's equal to 1 -> we get a coefficient*1
-	cout << endl << endl << "Test 1";
-	cout << endl << test.toString();
-	cout << endl << "The expected result for degree n = 0 is ----------> " << expected;
-	cout << endl << "The result of the programm for degree n = 0 is ---> " << test.calc();
-	if (test.getValue() == expected) 
+bool test1() {
+	Polinomial first(-1);
+	Polinomial second(5);
+	Polinomial sum = first + second;
+	int expected = *second.getCoeff(); //the first array does not exist, and the sum is equal to the second array
+	if (*sum.getCoeff() == expected)
 		return true;
-	else 
-		return false;
+	else return false;
 }
 
-bool test2(int x) { //test for the degree = - 1
-	Polinomial test(-1);
-	int expected = 0;
-	cout << endl << endl << "Test 2";
-	cout << endl << test.toString();
-	cout << endl << "The expected result for degree n = - 1 is --------> " << expected;
-	cout << endl << "The result of the programm for degree n = -1 is ---> " << test.calc();
-	if (test.getValue() == expected) //if the degree of the polynomial is negative, the program will not enter the array of its filling and the polynomial will take the value set initially, i.e. 0
+bool test2() {
+	Polinomial first(0);
+	Polinomial newfirst = first--;
+	int expected = -33686019; //garbage
+	if (*newfirst.getCoeff() == expected)
 		return true;
-	else
-		return false;
-}
-
-bool test3(int x) { ////test for the degree = 4
-	Polinomial test(4);
-	int expected = -95;
-	cout << endl << endl << "Test 3";
-	cout << endl << test.toString();
-	cout << endl << "The expected result for degree n = 4 is ----------> " << expected;
-	cout << endl << "The result of the programm for degree n = 4 is ---> " << test.calc();
-	if (test.getValue() == expected)
-		return true;
-	else
-		return false;
+	else return false;
 }
 
 int main() {
-	Polinomial first (5);
-	first.setX(3);
-	Polinomial copy(first);
-	Polinomial firstf;
-	cout << copy.toString();
-	cout << endl << "The value of a polynomial of degree 5 of x = 3:  " << first.calc();
+	Polinomial first(3);
+	Polinomial second(5);
+	Polinomial copy1(first);
+	Polinomial copy2(second);
+	cout << "The first polinomial: " << first.toString() << endl;
+	cout << "The second polinomial: " << second.toString() << endl;
 
-	if (test1(3))
-		cout << endl << "Test 1 is true";
-	else cout << "Test 1 is false";
+	Polinomial sum = first + second;
+	cout << endl << "The sum of polynomials: " << sum.toString() << endl;
+	Polinomial difference = first - second;
+	cout << endl << "The difference of polynomials: " << difference.toString() << endl << endl;
 
-	if (test2(3))
-		cout << endl << "Test 2 is true";
-	else cout << "Test 2 is false";
+	Polinomial newfirst = copy1++;
+	cout << "The increasing of the degree of the first polinomial: " << newfirst.toString() << endl << endl;
 
-	if (test3(3))
-		cout << endl << "Test 3 is true";
-	else cout << endl << "Test 3 is false";
+	Polinomial newsecond = copy2--;
+	cout << "The lowering of the degree of the second polinomial: " << newsecond.toString() << endl << endl;
 
-	cout << endl << endl << "the count of objects:  " << first.getCount();
+	Polinomial value;
+	cout << "Result of calculating the first polynomial from x=3: " << value(first) << endl << endl;
+	
+
+	cout << "The value of the first element of first coefficients's array: "<< first[1] << endl << endl;;
+	
+	first = second;
+
+	cout << "The value of the first polinomial after first = second: " << first.toString() << endl << endl;;
+
+	cout << boolalpha << "Test 1 is " << test1() << endl << endl;
+	cout << boolalpha << "Test 2 is " << test2() << endl << endl;
 
 	return 0;
+
 }

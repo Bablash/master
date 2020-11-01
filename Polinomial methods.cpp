@@ -92,30 +92,45 @@ Polinomial Polinomial::operator-(const Polinomial& other)
 	return diff;
 }
 
-Polinomial Polinomial::operator++(int degree)
+void Polinomial::operator++(int degree)
 {
-	Polinomial change;
-	change.n = ++n;
-	change.coeff = new int[n + 2];
-	change.coeff[0] = rand() % 201 - 100;	//add the new element for new degree
+	n++;
+	int* newcoeff = new int[n + 1];
+	newcoeff[0] = rand() % 201 - 100;	//add the new element for new degree
 	for (int i = 1; i <= n; i++)
-		change.coeff[i] = coeff[i - 1];		//shifting the original array one to the right
-	return change;
+		newcoeff[i] = coeff[i - 1];		//shifting the original array one to the right
+	coeff = newcoeff;
 }
 
-Polinomial Polinomial::operator--(int degree)
+void Polinomial::operator--(int degree)
 {
-	Polinomial change;
-	change.n = --n;
-	change.coeff = new int[n + 1];
-	for (int i = 1; i <= n + 1; i++)
-		change.coeff[i - 1] = coeff[i]; //shifting the original array one to the left
-	return change;
+	try {
+		if (n <= 0) {
+			throw n;
+			return;
+		}
+		n--;
+		int* newcoeff = new int[n + 1];
+		for (int i = 0; i <= n + 1; i++)
+			newcoeff[i] = coeff[i + 1]; //shifting the original array one to the left
+		coeff = newcoeff;
+	}
+	catch (int n) {
+		cerr << "Caught an int exception with value: " << n << endl;
+	}
 }
 
 int& Polinomial::operator[](int index)
 {
-	return coeff[index];
+	try {
+		if (index > n or index < 0)
+			throw index;
+		return coeff[index];
+	}
+	catch(int index){
+		cerr << "Caught an int exception with value: ";
+		return index;
+	}
 }
 
 void Polinomial::operator=(const Polinomial& other)
@@ -129,10 +144,10 @@ void Polinomial::operator=(const Polinomial& other)
 	}
 }
 
-void Polinomial::operator()(Polinomial& x)
+int Polinomial::operator()()
 {
-	x.setX(3);
-	x.value = x.calc();
+	value = calc();
+	return value;
 } 
 
 int Polinomial::calc() {

@@ -24,11 +24,11 @@ public:
 
 	friend Polinomial operator +(const Polinomial& thiss, const Polinomial& other);
 	Polinomial operator -(const Polinomial& other);
-	Polinomial operator ++(int degree);
-	Polinomial operator --(int degree);
+	void operator ++(int degree);
+	void operator --(int degree);
 	int& operator [](int index);
 	void operator = (const Polinomial& other);
-	void operator ()(Polinomial& x);
+	int operator ()();
 	~Polinomial(); //destructor
 	
 private:

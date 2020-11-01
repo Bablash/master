@@ -16,11 +16,9 @@ bool test1() {
 
 bool test2() {
 	Polinomial first(0);
-	Polinomial newfirst = first--;
-	int expected = -33686019; //garbage
-	if (*newfirst.getCoeff() == expected)
+	first--;
 		return true;
-	else return false;
+
 }
 
 int main() {
@@ -36,18 +34,17 @@ int main() {
 	Polinomial difference = first - second;
 	cout << endl << "The difference of polynomials: " << difference.toString() << endl << endl;
 
-	Polinomial newfirst = copy1++;
-	cout << "The increasing of the degree of the first polinomial: " << newfirst.toString() << endl << endl;
+	copy1++;
+	cout << "The increasing of the degree of the first polinomial: " << copy1.toString() << endl << endl;
 
-	Polinomial newsecond = copy2--;
-	cout << "The lowering of the degree of the second polinomial: " << newsecond.toString() << endl << endl;
+	copy2--;
+	cout << "The lowering of the degree of the second polinomial: " << copy2.toString() << endl << endl;
 
-	Polinomial value;
-	value(first);
-	cout << "Result of calculating the first polynomial from x=3: " << first.getValue() << endl << endl;
-	
+	first.setX(3);
+	cout << "Result of calculating the first polynomial from x=3: " << first() << endl << endl;
 
-	cout << "The value of the first element of first coefficients's array: "<< first[1] << endl << endl;;
+	cout << "The value of the 15 element of first coefficients's array: ";
+	cout << first[-1] << endl << endl;
 	
 	first = second;
 

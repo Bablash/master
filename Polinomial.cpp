@@ -44,7 +44,13 @@ int main() {
 	cout << "Result of calculating the first polynomial from x=3: " << first() << endl << endl;
 
 	cout << "The value of the 15 element of first coefficients's array: ";
-	cout << first[-1] << endl << endl;
+	try {
+		cout << first[-1] << endl << endl;
+	}
+	catch(ArrayException& exception)
+	{
+		std::cerr << "An array exception occurred (" << exception.getError() << ")" << endl << endl;
+	}
 	
 	first = second;
 

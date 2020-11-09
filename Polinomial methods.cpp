@@ -2,6 +2,7 @@
 #include "Polinomial.h"
 #include <string>
 #include <stdio.h>
+#include <exception>
 
 using namespace std;
 
@@ -92,7 +93,7 @@ Polinomial Polinomial::operator-(const Polinomial& other)
 	return diff;
 }
 
-void Polinomial::operator++(int degree)
+int* Polinomial::operator++(int degree)
 {
 	n++;
 	int* newcoeff = new int[n + 1];
@@ -100,14 +101,15 @@ void Polinomial::operator++(int degree)
 	for (int i = 1; i <= n; i++)
 		newcoeff[i] = coeff[i - 1];		//shifting the original array one to the right
 	coeff = newcoeff;
+	return coeff;
 }
 
-void Polinomial::operator--(int degree)
+int* Polinomial::operator--(int degree)
 {
 	try {
 		if (n <= 0) {
 			throw n;
-			return;
+			//return;
 		}
 		n--;
 		int* newcoeff = new int[n + 1];
@@ -118,22 +120,31 @@ void Polinomial::operator--(int degree)
 	catch (int n) {
 		cerr << "Caught an int exception with value: " << n << endl;
 	}
+	return coeff;
 }
 
-int& Polinomial::operator[](int index)
-{
-	try {
-		if (index > n or index < 0)
-			throw index;
-		return coeff[index];
-	}
-	catch(int index){
-		cerr << "Caught an int exception with value: ";
-		return index;
-	}
+int& Polinomial::operator[](int index) {
+	
+	if (index > n or index < 0)
+	throw ArrayException("Invalid index");
+	return coeff[index];
 }
 
-void Polinomial::operator=(const Polinomial& other)
+
+//int& Polinomial::operator[](int index)
+//{
+//	try {
+//		if (index > n or index < 0)
+//			throw index;
+//		return coeff[index];
+//	}
+//	catch(int index){
+//		cerr << "Array Index out of Bounds: ";
+//		return index;
+//	}
+//}
+
+int* Polinomial::operator=(const Polinomial& other)
 {
 	delete[] coeff; //delete this coeff to fill with other elements
 	n = other.n;
@@ -142,6 +153,7 @@ void Polinomial::operator=(const Polinomial& other)
 	for (int i = 0; i <= other.n; i++) {
 		coeff[i] = other.coeff[i];
 	}
+	return coeff;
 }
 
 int Polinomial::operator()()
@@ -197,3 +209,10 @@ Polinomial::~Polinomial() {
 	delete[] coeff;
 	count--;
 }
+
+ArrayException::ArrayException(const char* error)
+	{
+		m_error = error;
+	}
+
+const char* ArrayException::getError() { return m_error; }

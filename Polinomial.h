@@ -24,10 +24,10 @@ public:
 
 	friend Polinomial operator +(const Polinomial& thiss, const Polinomial& other);
 	Polinomial operator -(const Polinomial& other);
-	void operator ++(int degree);
-	void operator --(int degree);
+	int* operator ++(int degree);
+	int* operator --(int degree);
 	int& operator [](int index);
-	void operator = (const Polinomial& other);
+	int* operator = (const Polinomial& other);
 	int operator ()();
 	~Polinomial(); //destructor
 	
@@ -37,6 +37,16 @@ private:
 	int x;
 	static int count;
 	int value;
+};
+
+class ArrayException
+{
+public:
+	ArrayException(const char* error);
+	const char* getError(); 
+
+private:
+	const char* m_error;
 };
 
 Polinomial operator +(const Polinomial& thiss, const Polinomial& other);

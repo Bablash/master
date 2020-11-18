@@ -106,21 +106,16 @@ int* Polinomial::operator++(int degree)
 
 int* Polinomial::operator--(int degree)
 {
-	try {
-		if (n <= 0) {
-			throw n;
-			//return;
-		}
-		n--;
-		int* newcoeff = new int[n + 1];
-		for (int i = 0; i <= n + 1; i++)
+	if (degree <= 0) 
+		throw ArrayException("Invalid index");
+	else {
+		degree--;
+		int* newcoeff = new int[degree + 1];
+		for (int i = 0; i <=  + 1; i++)
 			newcoeff[i] = coeff[i + 1]; //shifting the original array one to the left
 		coeff = newcoeff;
+		return coeff;
 	}
-	catch (int n) {
-		cerr << "Caught an int exception with value: " << n << endl;
-	}
-	return coeff;
 }
 
 int& Polinomial::operator[](int index) {
@@ -131,20 +126,7 @@ int& Polinomial::operator[](int index) {
 }
 
 
-//int& Polinomial::operator[](int index)
-//{
-//	try {
-//		if (index > n or index < 0)
-//			throw index;
-//		return coeff[index];
-//	}
-//	catch(int index){
-//		cerr << "Array Index out of Bounds: ";
-//		return index;
-//	}
-//}
-
-int* Polinomial::operator=(const Polinomial& other)
+Polinomial& Polinomial::operator=(const Polinomial& other)
 {
 	delete[] coeff; //delete this coeff to fill with other elements
 	n = other.n;
@@ -153,7 +135,7 @@ int* Polinomial::operator=(const Polinomial& other)
 	for (int i = 0; i <= other.n; i++) {
 		coeff[i] = other.coeff[i];
 	}
-	return coeff;
+	return *this;
 }
 
 int Polinomial::operator()()

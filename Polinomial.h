@@ -27,7 +27,7 @@ public:
 	int* operator ++(int degree);
 	int* operator --(int degree);
 	int& operator [](int index);
-	int* operator = (const Polinomial& other);
+	Polinomial& operator = (const Polinomial& other);
 	int operator ()();
 	~Polinomial(); //destructor
 	

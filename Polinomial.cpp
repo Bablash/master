@@ -16,9 +16,16 @@ bool test1() {
 
 bool test2() {
 	Polinomial first(0);
-	first--;
-		return true;
+	try {
+		first--;
+		cout << first.toString() << endl << endl;
 
+	}
+	catch (ArrayException& exception)
+	{
+		std::cerr << "An array exception occurred (" << exception.getError() << ")" << endl;
+	}
+	return true;
 }
 
 int main() {
@@ -36,14 +43,22 @@ int main() {
 
 	copy1++;
 	cout << "The increasing of the degree of the first polinomial: " << copy1.toString() << endl << endl;
+	
+	cout << "The lowering of the degree of the second polinomial: ";
+	try {
+		copy2--;
+		cout << copy2.toString() << endl << endl;
 
-	copy2--;
-	cout << "The lowering of the degree of the second polinomial: " << copy2.toString() << endl << endl;
+	}
+	catch (ArrayException& exception)
+	{
+		std::cerr << "An array exception occurred (" << exception.getError() << ")" << endl << endl;
+	}
 
 	first.setX(3);
 	cout << "Result of calculating the first polynomial from x=3: " << first() << endl << endl;
 
-	cout << "The value of the 15 element of first coefficients's array: ";
+	cout << "The value of the -1 element of first coefficients's array: ";
 	try {
 		cout << first[-1] << endl << endl;
 	}

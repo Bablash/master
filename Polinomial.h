@@ -24,8 +24,8 @@ public:
 
 	friend Polinomial operator +(const Polinomial& thiss, const Polinomial& other);
 	Polinomial operator -(const Polinomial& other);
-	int* operator ++(int degree);
-	int* operator --(int degree);
+	Polinomial operator ++(int degree);
+	Polinomial operator --(int degree);
 	int& operator [](int index);
 	Polinomial& operator = (const Polinomial& other);
 	int operator ()();

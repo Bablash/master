@@ -209,23 +209,28 @@ istream& operator>> (istream& is, Polinomial& other) {
 }
 
 
-bool Polinomial::write_binary(fstream& filename) {
+bool Polinomial::write(ofstream& filename) {
 
 	try {
 
-		if (coeff == nullptr) { throw ArrayException("Write in binary hasn't been complited "); }
+		if (coeff == nullptr)
+			throw ArrayException("Write in binary hasn't been complited ");
 
 		if (!filename.is_open()) {
-
 			cout << "error of open" << endl;
 			return 0;
 		}
 		else {
 
 			cout << "file is open" << endl;
+
+			filename.write((char*)& n, sizeof(n));
 
 			for (int i = 0; i <= n; i++)
-				filename << coeff;
+				filename.write((char*)& (coeff[i]), sizeof(n));
+
+			filename.write((char*)& x, sizeof(x));
+			filename.write((char*)& value, sizeof(value));
 			return 1;
 		}
 		filename.close();
@@ -238,31 +243,31 @@ bool Polinomial::write_binary(fstream& filename) {
 }
 
 
-bool Polinomial::read_binary(fstream& filename) {
+bool Polinomial::read(ifstream& filename) {
 
 	try {
 
-		if (coeff == nullptr) { throw ArrayException("Read from binary hasn't been complited "); }
+		if (coeff == nullptr) 
+			throw ArrayException("Read from binary hasn't been complited "); 
 
-		if (!filename.is_open()) {
-
+		if (!filename.is_open()) 
 			cout << "error of open" << endl;
-			return 0;
-		}
+	
 		else {
-
+			Polinomial A;
 			cout << "file is open" << endl;
+			filename.read((char*)& A.n, sizeof(A.n));
 
-			int len = n;
+			int len = A.n + 1;
+			int* newcoeff = new int[len];
+			for (int i = 0; i <= n; i++)
+			filename.read((char*)& newcoeff[i], sizeof(len));
+			A.coeff = newcoeff;
 
-			filename.seekg(-len - 2, ios::end);
+			filename.read((char*)& A.x, sizeof(A.x));
+			filename.read((char*)& A.value, sizeof(A.value));
 
-			for (int i = 0; i <= n; i++) {
-				filename >> *coeff;
-				cout << coeff << " ";
-			}
-			cout << endl;
-			return 1;
+			cout << A << endl;
 		}
 		filename.close();
 
@@ -274,7 +279,7 @@ bool Polinomial::read_binary(fstream& filename) {
 	}
 }
 
-Polinomial::~Polinomial() {
+	Polinomial::~Polinomial() {
 	delete[] coeff;
 	count--;
-}
+	}

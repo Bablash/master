@@ -36,9 +36,9 @@ public:
 
 	friend istream& operator>> (istream& is, Polinomial& coeff);
 
-	bool write(ofstream& filename);
+	void write(ofstream& filename);
 
-	bool read(ifstream& filename);
+	void read(ifstream& filename);
 
 	~Polinomial(); //destructor
 

@@ -209,17 +209,16 @@ istream& operator>> (istream& is, Polinomial& other) {
 }
 
 
-bool Polinomial::write(ofstream& filename) {
+void Polinomial::write(ofstream& filename) {
 
 	try {
 
 		if (coeff == nullptr)
 			throw ArrayException("Write in binary hasn't been complited ");
 
-		if (!filename.is_open()) {
+		if (!filename.is_open()) 
 			cout << "error of open" << endl;
-			return 0;
-		}
+		
 		else {
 
 			cout << "file is open" << endl;
@@ -227,11 +226,10 @@ bool Polinomial::write(ofstream& filename) {
 			filename.write((char*)& n, sizeof(n));
 
 			for (int i = 0; i <= n; i++)
-				filename.write((char*)& (coeff[i]), sizeof(n));
+				filename.write((char*)& (coeff[i]), sizeof(coeff[i]));
 
 			filename.write((char*)& x, sizeof(x));
 			filename.write((char*)& value, sizeof(value));
-			return 1;
 		}
 		filename.close();
 	}
@@ -243,7 +241,7 @@ bool Polinomial::write(ofstream& filename) {
 }
 
 
-bool Polinomial::read(ifstream& filename) {
+void Polinomial::read(ifstream& filename) {
 
 	try {
 
@@ -261,7 +259,7 @@ bool Polinomial::read(ifstream& filename) {
 			int len = A.n + 1;
 			int* newcoeff = new int[len];
 			for (int i = 0; i <= n; i++)
-			filename.read((char*)& newcoeff[i], sizeof(len));
+			filename.read((char*)& newcoeff[i], sizeof(newcoeff[i]));
 			A.coeff = newcoeff;
 
 			filename.read((char*)& A.x, sizeof(A.x));

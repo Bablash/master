@@ -35,9 +35,9 @@ bool test_original_file(Polinomial& A, Polinomial& B) {
 			else {
 				cout << "file is open" << endl;
 
-				int len = A.getN();
+				int len = 4*A.getN();
 
-				fs1.seekg(-len*4, ios::end);
+				fs1.seekg(-len, ios::end);
 				fs1 >> B;
 				cout << B << endl;
 			}
@@ -59,15 +59,16 @@ bool test_original_file(Polinomial& A, Polinomial& B) {
 
 bool test_binary_file(Polinomial& A, ifstream& filename1, ofstream& filename2) {
 
-	const int expected[4] = { -59, 76, 3, 69 };
+	int* expected = A.getCoeff();
 
 	try {
 
-		if (A.getCoeff() == nullptr) 
+		if (A.getCoeff() == NULL) 
 			throw "Test hasn't been complited "; 
 		else {
-
-			if (A.write(filename2) && A.read(filename1))
+			A.write(filename2);
+			A.read(filename1);
+			if (A.getCoeff() == expected)
 				return true;
 			else 
 				return false;

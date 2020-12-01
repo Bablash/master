@@ -196,15 +196,23 @@ const char* ArrayException::getError() {
 }
 
 ostream& operator<< (ostream& out, const Polinomial& other) {
+	out << "degree " << other.n << endl;
+	out << "coeff ";
 	for (int i = 0; i <= other.n; i++) 
 		out << other.coeff[i] << " ";
+	out << endl;
 	return out;
 }
 
 
 istream& operator>> (istream& is, Polinomial& other) {
+	is.seekg(7, ios::cur);
+	is >> other.n;
+	other.coeff = new int[other.n + 1];
+	is.seekg(7, ios::cur);
 	for (int i = 0; i <= other.n; i++) 
 		is >> other.coeff[i];
+	is.seekg(2, ios::cur);
 	return is;
 }
 
@@ -259,7 +267,7 @@ void Polinomial::read(ifstream& filename) {
 			int len = A.n + 1;
 			int* newcoeff = new int[len];
 			for (int i = 0; i <= n; i++)
-			filename.read((char*)& newcoeff[i], sizeof(newcoeff[i]));
+				filename.read((char*)& newcoeff[i], sizeof(newcoeff[i]));
 			A.coeff = newcoeff;
 
 			filename.read((char*)& A.x, sizeof(A.x));

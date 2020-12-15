@@ -16,3 +16,8 @@ char* String::toString() {
 	ch = str;
 	return ch;
 }
+
+String::~String()
+{
+	delete[] ch;
+}

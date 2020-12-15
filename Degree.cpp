@@ -129,3 +129,41 @@ void Degree::read(ifstream& filename)
 		std::cerr << "Error: " << exception.getError() << std::endl << "_______________" << std::endl;
 	}
 }
+
+char* Degree::toString() {
+	char* str = new char[255]{ "" };
+	char* buff = new char[20];
+
+	sprintf_s(buff, 20, "Degree: %d \n", n);
+	strcat_s(str, 255, buff);
+
+	sprintf_s(buff, 20, "Coeff of degree: ");
+	strcat_s(str, 255, buff);
+
+	for (int i = 0; i <= n; i++) {
+		sprintf_s(buff, 20, " %d ", degree[i]);
+		strcat_s(str, 255, buff);
+		if (i == n) {
+			sprintf_s(buff, 20, "\n");
+			strcat_s(str, 255, buff);
+		}
+
+	}
+
+	for (int i = 0; i <= n; i++)
+	{
+		if (coeff[i] < 0 or i == 0)
+			sprintf_s(buff, 20, "%d*x^%d", coeff[i], degree[i]);
+		else
+			sprintf_s(buff, 20, "+%d*x^%d", coeff[i], degree[i]);
+		strcat_s(str, 255, buff);
+	}
+
+	char* ch = str;
+	return ch;
+}
+
+Degree::~Degree()
+{
+	delete[] degree;
+}

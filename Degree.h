@@ -42,6 +42,10 @@ public:
 
 	void read(ifstream& filename);
 
+	char* toString();
+
+	~Degree();
+
 protected:
 	int* degree;
 };

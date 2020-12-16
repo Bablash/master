@@ -1,5 +1,7 @@
 #pragma once
+#include <fstream>
 
+using namespace std;
 class Polinomial {
 public:
 	void setN(int n1);
@@ -27,16 +29,46 @@ public:
 	Polinomial operator ++(int degree);
 	Polinomial operator --(int degree);
 	int& operator [](int index);
-	void operator = (const Polinomial& other);
-	int operator ()(Polinomial& x);
+	Polinomial& operator = (const Polinomial& other);
+	bool operator == (const Polinomial& other);
+	int operator ()();
+
+	friend ostream& operator<< (ostream& out, const Polinomial& coeff);
+
+	friend istream& operator>> (istream& is, Polinomial& coeff);
+
+	void write(ofstream& filename);
+
+	void read(ifstream& filename);
+
+	virtual const char* getNameofclass()
+	{
+		return "Polinomial";
+	}
+
 	~Polinomial(); //destructor
-	
-private:
+
+protected:
 	int n;
 	int* coeff;
 	int x;
 	static int count;
 	int value;
+	Polinomial *next;
+	Polinomial* prev;
+};
+
+class ArrayException
+{
+public:
+	ArrayException(const char* error);
+	const char* getError();
+
+private:
+	const char* m_error;
 };
 
 Polinomial operator +(const Polinomial& thiss, const Polinomial& other);
+
+
+#pragma once

@@ -12,7 +12,8 @@ struct Elem {
 class List {
 public:
 	List();
-	void add(int pos, Polinomial field);
+	int getCount1();
+	bool add(int pos, Polinomial field);
 	void printAll();
 	void print(int pos);
 	void delAll();

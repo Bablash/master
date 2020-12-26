@@ -7,7 +7,11 @@ List::List() {
 	count1 = 0;
 }
 
-void List::add(int pos, Polinomial field) {
+int List::getCount1() {
+	return count1;
+}
+
+bool List::add(int pos, Polinomial field) {
 	try
 	{
 		if (pos < 1 || pos > count1 + 1) {
@@ -20,7 +24,7 @@ void List::add(int pos, Polinomial field) {
 			temp->field = field;
 			head = tail = temp;
 			count1++;
-			return;
+			return true;
 		}
 		if (pos == 1 && head != NULL && tail != NULL) {
 			temp->next = tail;
@@ -30,7 +34,7 @@ void List::add(int pos, Polinomial field) {
 			tail->prev = temp;
 			head = temp;
 			count1++;
-			return;
+			return true;
 		}
 		if (pos == count1 + 1) {
 			temp->next = tail;
@@ -40,7 +44,7 @@ void List::add(int pos, Polinomial field) {
 			head->next = temp;
 			tail = temp;
 			count1++;
-			return;
+			return true; 
 		}
 		int i = 1;
 		Elem* Ins = head;
@@ -55,10 +59,12 @@ void List::add(int pos, Polinomial field) {
 		Ins->next = temp;
 		temp->field = field;
 		count1++;
+		return true;
 	}
 	catch (ArrayException& exception) {
 
 		std::cerr << "Error: " << exception.getError() << endl << endl;
+		return false;
 	}
 }
 

@@ -8,69 +8,91 @@
 using namespace std;
 int Polinomial::count = 0;
 
-void testAdd(Polinomial other, List L) {
-	try {
-		L.add(1, other);
-		if (L.getData(1) == other)
-			cout << "Add Test is successful" << endl;
-		else throw ArrayException("Add Test is failed");
-	}
-	
-	catch (ArrayException& exception) {
-		cout << "Error" << endl;
-	}
-}
+void testAdd() {
+	List D;
 
-void testDelete(Polinomial one, Polinomial two, List L) {
-	try {
-		L.add(1, one);
-		L.add(2, two);
-		L.del(1);
-		if (L.getData(1) == two)
-			cout << "Delete is successful" << endl;
-		else throw ArrayException("Delete is failed");
-	}
-	catch (ArrayException& exception) {
-		cout << "Error" << endl;
-	}
-		
-}
+	Polinomial one(3);
+	Degree two(5);
+	String three(4);
 
-void testDeleteAll(Polinomial one, Polinomial two, Polinomial three , List L) {
-	try {
-		L.add(1, one);
-		L.add(2, two);
-		L.add(3, three);
-		L.delAll();
-		if (L.empty() == 1) {
-			cout << "Delete of all is successful" << endl;
+	Polinomial* f = &one;
+	if (D.add(1, one)) {
+		f = &two;
+		if (D.add(2, *f)) {
+			f = &three;
+			if (D.add(3, *f)) {
+				cout << "Adding of three different elements is successful" << endl;
+			}
 		}
-		else {
-			throw ArrayException("Delete of all is failed");
-		}
+
 	}
-	catch (ArrayException& exception) {
-		cout << "Error" << endl;
-	}
+	else cout << "Adding of three different elements is failed" << endl;
+
 }
 
-void test_virtual_func(Polinomial& other) {
+void testPrint() {
+	List D;
+
+	Polinomial one(3);
+	Degree two(5);
+	String three(4);
+
+	Polinomial* f = &one;
+	if (D.add(1, one)) {
+		f = &two;
+		if (D.add(2, *f)) {
+			f = &three;
+			if (D.add(3, *f)) {
+				D.printAll();
+				cout << "Printing all is successful" << endl;
+			}
+		}
+	}
+	else cout << "Printing all is failed" << endl;
+
+}
+
+void testDelete() {
+	List D;
+
+	Polinomial one(3);
+	Degree two(5);
+	String three(4);
+
+	Polinomial* f = &one;
+	D.add(1, one);
+
+	f = &two;
+	D.add(2, *f);
+
+	f = &three;
+	D.add(3, *f);
+
+	D.delAll();
+	if (D.getCount1() == 0)
+		cout << "Deleting all is successful" << endl;
+	else cout << "Deleting all is failed" << endl;
+
+}
+
+void testVirtualFunc(Polinomial& other, Polinomial& A, Polinomial& B) {
 	cout << "Class of " << other.getNameofclass() << endl;
+	cout << "Class of " << A.getNameofclass() << endl;
+	cout << "Class of " << B.getNameofclass() << endl;
 }
 
 int main() {
-	
-	Polinomial test(2);
-	Degree first(3);
-	Degree second(6);
-	Degree third(7);
-
-	test_virtual_func(first);
 
 	List L1;
-	testAdd(first,L1);
-	testDelete(first, second, L1);
-	testDeleteAll(first, second, third, L1);
+	testAdd();
+	testPrint();
+	testDelete();
+
+	Polinomial A(4);
+	Degree H(3);
+	String L(6);
+
+	testVirtualFunc(A, H, L);
 
 	return 0;
 

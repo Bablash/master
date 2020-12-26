@@ -1,60 +1,302 @@
 #include <iostream>
 #include "Polinomial.h"
+#include <stdio.h>
+#include <exception>
 
 using namespace std;
-int Polinomial::count = 0;
 
-bool test1() {
-	Polinomial first(-1);
-	Polinomial second(5);
-	Polinomial sum = first + second;
-	int expected = *second.getCoeff(); //the first array does not exist, and the sum is equal to the second array
-	if (*sum.getCoeff() == expected)
-		return true;
-	else return false;
+void Polinomial::setN(int n1) {
+	n = n1;
 }
 
-bool test2() {
-	Polinomial first(0);
-	Polinomial newfirst = first--;
-	int expected = -33686019; //garbage
-	if (*newfirst.getCoeff() == expected)
-		return true;
-	else return false;
+void Polinomial::setX(int x1) {
+	x = x1;
 }
 
-int main() {
-	Polinomial first(3);
-	Polinomial second(5);
-	Polinomial copy1(first);
-	Polinomial copy2(second);
-	cout << "The first polinomial: " << first.toString() << endl;
-	cout << "The second polinomial: " << second.toString() << endl;
+int Polinomial::getValue() {
+	return value;
+}
 
-	Polinomial sum = first + second;
-	cout << endl << "The sum of polynomials: " << sum.toString() << endl;
-	Polinomial difference = first - second;
-	cout << endl << "The difference of polynomials: " << difference.toString() << endl << endl;
+int Polinomial::getN() {
+	return n;
+}
 
-	Polinomial newfirst = copy1++;
-	cout << "The increasing of the degree of the first polinomial: " << newfirst.toString() << endl << endl;
+int Polinomial::getX() {
+	return x;
+}
 
-	Polinomial newsecond = copy2--;
-	cout << "The lowering of the degree of the second polinomial: " << newsecond.toString() << endl << endl;
+int* Polinomial::getCoeff() {
+	return coeff;
+}
 
-	Polinomial value;
-	cout << "Result of calculating the first polynomial from x=3: " << value(first) << endl << endl;
-	
+int Polinomial::getCount() {
+	return count;
+}
 
-	cout << "The value of the first element of first coefficients's array: "<< first[1] << endl << endl;;
-	
-	first = second;
+Polinomial::Polinomial() {
+	coeff = NULL;
+}
 
-	cout << "The value of the first polinomial after first = second: " << first.toString() << endl << endl;;
+int Polinomial::pow(int x, int n) {
+	int poww = 1;
+	for (int i = n; i > 0; i--)
+		poww *= x;
+	return poww;
+}
 
-	cout << boolalpha << "Test 1 is " << test1() << endl << endl;
-	cout << boolalpha << "Test 2 is " << test2() << endl << endl;
+Polinomial operator+(const Polinomial& thiss, const Polinomial& other)
+{
+	Polinomial sum;
+	if (thiss.n > other.n) {  //if the arrays are of different lengths, the length of the resulting array is equal to the length of the larger array. 
+		sum.n = thiss.n;		//Its first elements are written to the final array without changes until the counter shifts by their difference
+		sum.coeff = new int[thiss.n + 1];
+		for (int i = 0; i < thiss.n - other.n; i++) {
+			sum.coeff[i] = thiss.coeff[i];
+			for (int k = 0, i = thiss.n - other.n; i <= thiss.n; i++, k++)
+				sum.coeff[i] = thiss.coeff[i] + other.coeff[k];
+		}
+	}
+	else {
+		sum.n = other.n;
+		sum.coeff = new int[other.n + 1];
+		for (int i = 0; i < other.n - thiss.n; i++) {
+			sum.coeff[i] = other.coeff[i];
+			for (int k = 0, i = other.n - thiss.n; i <= other.n; i++, k++)
+				sum.coeff[i] = thiss.coeff[k] + other.coeff[i];
+		}
+	}
+	return sum;
+}
 
-	return 0;
+Polinomial Polinomial::operator-(const Polinomial& other)
+{
+	Polinomial diff;
+	if (n > other.n) {
+		diff.n = n;
+		diff.coeff = new int[n + 1];
+		for (int i = 0; i < n - other.n; i++) {
+			diff.coeff[i] = coeff[i];
+			for (int k = 0, i = n - other.n; i <= n; i++, k++)
+				diff.coeff[i] = coeff[i] - other.coeff[k];
+		}
+	}
+	else {
+		diff.n = other.n;
+		diff.coeff = new int[other.n + 1];
+		for (int i = 0; i < other.n - n; i++) {
+			diff.coeff[i] = other.coeff[i];
+			for (int k = 0, i = other.n - n; i <= other.n; i++, k++)
+				diff.coeff[i] = coeff[k] - other.coeff[i];
+		}
+	}
+	return diff;
+}
 
+Polinomial Polinomial::operator ++(int degree)
+{
+	n++;
+	int* newcoeff = new int[n + 1];
+	newcoeff[0] = rand() % 201 - 100;	//add the new element for new degree
+	for (int i = 1; i <= n; i++)
+		newcoeff[i] = coeff[i - 1];		//shifting the original array one to the right
+	coeff = newcoeff;
+	return *this;
+}
+
+Polinomial Polinomial::operator--(int degree)
+{
+	if (n <= 0)
+		throw ArrayException("Invalid index");
+	else {
+		n--;
+		int* newcoeff = new int[n + 1];
+		for (int i = 0; i <= n + 1; i++)
+			newcoeff[i] = coeff[i + 1]; //shifting the original array one to the left
+		coeff = newcoeff;
+		return *this;
+	}
+}
+
+int& Polinomial::operator[](int index) {
+
+	if (index > n or index < 0)
+		throw ArrayException("Invalid index");
+	return coeff[index];
+}
+
+
+Polinomial& Polinomial::operator=(const Polinomial& other)
+{
+	delete[] coeff; //delete this coeff to fill with other elements
+	n = other.n;
+	x = other.x;
+	coeff = new int[other.n + 1];
+	for (int i = 0; i <= other.n; i++) {
+		coeff[i] = other.coeff[i];
+	}
+	return *this;
+}
+
+bool Polinomial::operator == (const Polinomial& other) {
+	if (n != other.n) {
+		return 0;
+	}
+	for (int i = 0; i <= n; i++) {
+		if (coeff[i] != other.coeff[i]) {
+			return 0;
+		}
+	}
+	return 1;
+}
+
+int Polinomial::operator()()
+{
+	value = calc();
+	return value;
+}
+
+int Polinomial::calc() {
+	int value1 = 0;
+	for (int i = 0, k = n; i <= n && k >= 0; k--, i++) {
+		value1 += coeff[i] * pow(x, k);
+	}
+	value = value1;
+	return value1;
+}
+
+char* Polinomial::toString() {
+	char* str = new char[255]{ "" };
+	char* buff = new char[20];
+	for (int i = 0; i <= n; i++)
+	{
+		if (coeff[i] < 0 or i == 0)
+			sprintf_s(buff, 20, "%d*x^%d", coeff[i], n - i);
+		else
+			sprintf_s(buff, 20, "+%d*x^%d", coeff[i], n - i);
+		strcat_s(str, 255, buff);
+	}
+	char* ch = str;
+	return ch;
+}
+
+Polinomial::Polinomial(int n1) {
+	n = n1;
+	coeff = new int[n1 + 1];
+	for (int i = 0; i <= n1; i++) {
+		coeff[i] = rand() % 201 - 100;
+	}
+	count++;
+}
+
+Polinomial::Polinomial(const Polinomial& other) {
+	n = other.n;
+	x = other.x;
+	coeff = new int[other.n + 1];
+	for (int i = 0; i <= other.n; i++) {
+		coeff[i] = other.coeff[i];
+	}
+	count++;
+}
+
+ArrayException::ArrayException(const char* error) {
+	m_error = error;
+}
+
+const char* ArrayException::getError() {
+	return m_error;
+}
+
+ostream& operator<< (ostream& out, const Polinomial& other) {
+	out << "degree " << other.n << endl;
+	out << "coeff ";
+	for (int i = 0; i <= other.n; i++)
+		out << other.coeff[i] << " ";
+	out << endl;
+	return out;
+}
+
+
+istream& operator>> (istream& is, Polinomial& other) {
+	is.seekg(7, ios::cur);
+	is >> other.n;
+	other.coeff = new int[other.n + 1];
+	is.seekg(7, ios::cur);
+	for (int i = 0; i <= other.n; i++)
+		is >> other.coeff[i];
+	is.seekg(2, ios::cur);
+	return is;
+}
+
+
+void Polinomial::write(ofstream& filename) {
+
+	try {
+
+		if (coeff == nullptr)
+			throw ArrayException("Write in binary hasn't been complited ");
+
+		if (!filename.is_open())
+			cout << "error of open" << endl;
+
+		else {
+
+			cout << "file is open" << endl;
+
+			filename.write((char*)& n, sizeof(n));
+
+			for (int i = 0; i <= n; i++)
+				filename.write((char*) & (coeff[i]), sizeof(coeff[i]));
+
+			filename.write((char*)& x, sizeof(x));
+			filename.write((char*)& value, sizeof(value));
+		}
+		filename.close();
+	}
+
+	catch (ArrayException& exception) {
+
+		std::cerr << "Error: " << exception.getError() << std::endl << "_______________" << std::endl;
+	}
+}
+
+
+void Polinomial::read(ifstream& filename) {
+
+	try {
+
+		if (coeff == nullptr)
+			throw ArrayException("Read from binary hasn't been complited ");
+
+		if (!filename.is_open())
+			cout << "error of open" << endl;
+
+		else {
+			Polinomial A;
+			cout << "file is open" << endl;
+			filename.read((char*)& A.n, sizeof(A.n));
+
+			int len = A.n + 1;
+			int* newcoeff = new int[len];
+			for (int i = 0; i <= n; i++)
+				filename.read((char*)& newcoeff[i], sizeof(newcoeff[i]));
+			A.coeff = newcoeff;
+
+			filename.read((char*)& A.x, sizeof(A.x));
+			filename.read((char*)& A.value, sizeof(A.value));
+
+			cout << A << endl;
+		}
+		filename.close();
+
+	}
+
+	catch (ArrayException& exception) {
+
+		std::cerr << "Error: " << exception.getError() << std::endl << "_______________" << std::endl;
+	}
+}
+
+Polinomial::~Polinomial() {
+	delete[] coeff;
+	count--;
 }

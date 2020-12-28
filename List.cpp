@@ -11,7 +11,7 @@ int List::getCount1() {
 	return count1;
 }
 
-bool List::add(int pos, Polinomial field) {
+bool List::Insert(int pos, Polinomial field) {
 	try
 	{
 		if (pos < 1 || pos > count1 + 1) {
@@ -78,11 +78,11 @@ void List::printAll()
 		Elem* temp = head;
 		for (int i = 0; i < count1; i++)
 		{
-			temp->field.toString();
+			cout << temp->field.toString() << endl;
 			temp = temp->prev;
 		}
 
-		temp->field.toString();
+		cout << temp->field.toString() << endl;
 	}
 	catch (ArrayException& exception) {
 
@@ -103,13 +103,13 @@ void List::print(int pos) {
 	temp->field.toString();
 }
 
-void List::delAll()
+void List::ClearList()
 {
 	while (count1 != 0)
-		del(1);
+		remove(1);
 }
 
-void List::del(int pos) {
+void List::remove(int pos) {
 	try
 	{
 		if (pos < 1 || pos > count1 + 1) {
@@ -185,5 +185,5 @@ Polinomial List::getData(int pos) {
 }
 
 List::~List() {
-	delAll();
+	ClearList();
 }

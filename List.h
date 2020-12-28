@@ -13,11 +13,11 @@ class List {
 public:
 	List();
 	int getCount1();
-	bool add(int pos, Polinomial field);
+	bool Insert(int pos, Polinomial field);
 	void printAll();
 	void print(int pos);
-	void delAll();
-	void del(int pos);
+	void ClearList();
+	void remove(int pos);
 	bool empty();
 	Polinomial getData(int pos);
 	~List();

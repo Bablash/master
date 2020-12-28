@@ -20,7 +20,7 @@ public:
 
 	int calc(); //The value of a polynomial of degree n of x with the coefficients
 
-	char* toString(); //transformation of polinomial in string view
+	virtual char* toString(); //transformation of polinomial in string view
 
 	int pow(int x, int n); //exponentiation
 
@@ -40,11 +40,6 @@ public:
 	void write(ofstream& filename);
 
 	void read(ifstream& filename);
-
-	virtual const char* getNameofclass()
-	{
-		return "Polinomial";
-	}
 
 	~Polinomial(); //destructor
 
@@ -70,5 +65,3 @@ private:
 
 Polinomial operator +(const Polinomial& thiss, const Polinomial& other);
 
-
-#pragma once

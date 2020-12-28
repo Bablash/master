@@ -43,12 +43,7 @@ public:
 
 	void read(ifstream& filename);
 
-	char* toString();
-
-	virtual const char* getNameofclass()
-	{
-		return "Degree";
-	}
+	char* toString() override;
 
 	~Degree();
 
